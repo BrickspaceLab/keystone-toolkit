@@ -1,0 +1,12 @@
+/* TABLES */
+/* - apply base styles to set table */
+/* ======= */
+
+table {
+  tr {
+    @apply border--b-width color__border-divider-1;
+  }
+  td {
+    @apply border-0;
+  }
+}

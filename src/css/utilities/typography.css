@@ -1,0 +1,102 @@
+/* TYPOGRAPHY */
+/* - utility classes to add default typography styles */
+/* ======= */
+
+@layer utilities {
+  /* ======= */
+  /* body type */
+  .type__body {
+    font-family: var(--type__font-body-family);
+    font-style: var(--type__font-body-style);
+    font-weight: var(--type__font-body-weight);
+    @apply leading-relaxed tracking-normal normal-case underline-offset-2;
+  }
+
+  /* ======= */
+  /* header type */
+  .type__heading {
+    font-family: var(--type__font-header-family);
+    font-style: var(--type__font-header-style);
+    font-weight: var(--type__font-header-weight);
+    text-transform: var(--type__heading-capiliziation);
+    line-height: var(--type__font-heading-line);
+    @apply tracking-normal underline-offset-4;
+  }
+  .type__heading-1 {
+    font-size: var(--type__font-900);
+    font-size: var(--type__font-heading-1);
+  }
+  .type__heading-2 {
+    font-size: var(--type__font-800);
+    font-size: var(--type__font-heading-2);
+  }
+  .type__heading-3 {
+    font-size: var(--type__font-700);
+    font-size: var(--type__font-heading-3);
+  }
+  .type__heading-4 {
+    font-size: var(--type__font-600);
+    font-size: var(--type__font-heading-4);
+  }
+  .type__heading-5 {
+    font-size: var(--type__font-500);
+    font-size: var(--type__font-heading-5);
+  }
+  .type__heading-6 {
+    font-size: var(--type__font-400);
+    font-size: var(--type__font-heading-6);
+  }
+
+  /* ======= */
+  /* navigation type */
+  .type__nav {
+    font-family: var(--type__font-nav-family);
+    font-style: var(--type__font-nav-style);
+    font-weight: var(--type__font-nav-weight);
+    text-transform: var(--type__nav-capiliziation);
+    @apply leading-normal tracking-normal underline-offset-2;
+  }
+
+  /* ======= */
+  /* changing font size */
+  .type--smaller {
+    font-size: var(--type__font-100);
+    font-size: var(--type__font-smaller);
+    *, &::placeholder {
+      font-size: var(--type__font-100);
+      font-size: var(--type__font-smaller);
+    }
+  }
+  .type--small {
+    font-size: var(--type__font-200);
+    font-size: var(--type__font-small);
+    *, &::placeholder {
+      font-size: var(--type__font-200);
+      font-size: var(--type__font-small);
+    }
+  }
+  .type--base {
+    font-size: var(--type__font-300);
+    font-size: var(--type__font-base);
+    *, &::placeholder {
+      font-size: var(--type__font-300);
+      font-size: var(--type__font-base);
+    }
+  }
+  .type--big {
+    font-size: var(--type__font-400);
+    font-size: var(--type__font-big);
+    *, &::placeholder {
+      font-size: var(--type__font-400);
+      font-size: var(--type__font-big);
+    }
+  }
+  .type--bigger {
+    font-size: var(--type__font-500);
+    font-size: var(--type__font-bigger);
+    *, &::placeholder {
+      font-size: var(--type__font-500);
+      font-size: var(--type__font-bigger);
+    }
+  }
+}

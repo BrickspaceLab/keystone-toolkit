@@ -1,0 +1,112 @@
+/* TYPOGRAPHY */
+/* - apply base styles to set type */
+/* ======= */
+
+@layer base {
+
+  /* body */
+  html,
+  body,
+  blockquote,
+  dl,
+  dd,
+  hr,
+  figure,
+  p,
+  pre,
+  span {
+    @apply type__body type--base;
+  }
+
+  /* headings */
+  h1,
+  .h1,
+  h1 > * {
+    @apply type__heading type__heading-1;
+  }
+  h2,
+  .h2,
+  h2 > * {
+    @apply type__heading type__heading-2;
+  }
+  h3,
+  .h3,
+  h3 > * {
+    @apply type__heading type__heading-3;
+  }
+  h4,
+  .h4,
+  h4 > * {
+    @apply type__heading type__heading-4;
+  }
+  h5,
+  .h5,
+  h5 > * {
+    @apply type__heading type__heading-5;
+  }
+  h6,
+  .h6,
+  h6 > * {
+    @apply type__heading type__heading-6;
+  }
+
+  /* nav */
+  input,
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"],
+  input[type="time"],
+  input[type="search"],
+  input[type="tel"],
+  select,
+  select[multiple],
+  textarea,
+  .form-input,
+  .form-select {
+    @apply type__body text-[16px];
+  }
+  label {
+    @apply cursor-pointer type__body type--small;
+  }
+
+  /* links  */
+  a {
+    @apply underline animation-300;
+
+    &:hover {
+      @apply underline md:opacity-75;
+    }
+
+    &:focus-visible {
+      @apply border--focus;
+    }
+  }
+
+  /* spacing */
+  .rte {
+    @apply space-y-4;
+  }
+  ul {
+    @apply pl-4 list-disc;
+  }
+  ol {
+    @apply pl-4 list-decimal;
+  }
+
+  /* font weight */
+  strong {
+    font-weight: bold;
+  }
+
+  /* mark tag for search query highlight */
+  mark {
+    background: none;
+    font-weight: bold;
+  }
+}

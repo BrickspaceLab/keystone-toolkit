@@ -1,0 +1,42 @@
+/* CONTAINERS */
+/* ======= */
+
+@layer components {
+  /* standard containers */
+  .window--narrow {
+    @apply px-4 m-auto md:max-w-2xl lg:max-w-3xl xl:max-w-4xl;
+  }
+  .window {
+    @apply px-4 m-auto md:max-w-screen-xl;
+  }
+  .window--wide {
+    @apply px-4 m-auto md:max-w-screen-2xl;
+  }
+  .window--full {
+    @apply m-auto pl-[10px] pr-[10px];
+  }
+  .md\:window--narrow {
+    @apply md:m-auto md:px-4 md:max-w-2xl lg:max-w-3xl xl:max-w-4xl;
+  }
+  .md\:window {
+    @apply md:m-auto md:px-4 md:max-w-screen-xl;
+  }
+  .md\:window--wide {
+    @apply md:m-auto md:px-4 md:max-w-screen-2xl;
+  }
+  .md\:window--full {
+    @apply md:m-auto md:pl-[10px] md:pr-[10px];
+  }
+  .window--max-full {
+    @apply max-w-[100vw];
+  }
+  .window--max-width {
+    @apply max-w-[calc(100vw-2em)];
+  }
+  .window--max-menuclamp {
+    @apply max-w-[calc(100vw-300px-2em)];
+  }
+  .window--max-cartclamp {
+    @apply max-w-[calc(100vw-400px-2em)];
+  }
+}

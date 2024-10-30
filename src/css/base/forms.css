@@ -1,0 +1,125 @@
+/* FORMS */
+/* - apply base styles to set form inputs */
+/* ======= */
+
+@layer base {
+  /* basic inputs */
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"],
+  input[type="time"],
+  input[type="search"],
+  input[type="tel"],
+  select,
+  select[multiple],
+  textarea {
+    @apply animation-300 w-full appearance-none py-1.5 px-4 min-h-[44px] border__input border__input--radius color__border-input color__bg-input border--input-padding;
+    &:hover {
+      @apply border__input--hover;
+    }
+    &:focus-visible {
+      @apply border__input--focus color__bg-body;
+    }
+  }
+  textarea {
+    @apply min-h-[88px];
+  }
+
+  /* remove number input arrows */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    @apply appearance-none;
+  }
+
+  /* radius */
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="number"],
+  input[type="url"],
+  input[type="date"],
+  input[type="datetime-local"],
+  input[type="month"],
+  input[type="week"],
+  input[type="time"],
+  input[type="search"],
+  input[type="tel"],
+  select,
+  select[multiple] {
+    @apply border__input--radius
+  }
+  textarea {
+    @apply border__textarea--radius;
+  }
+
+  /* select dropdown */
+  select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23222222' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+    background-position: right 1rem center !important;
+    background-position-x: right 1rem !important;
+    background-position-y: center !important;
+    background-repeat: no-repeat !important;
+    background-repeat-x: no-repeat !important;
+    background-repeat-y: no-repeat !important;
+    background-size: 1.5rem 1.5rem !important;
+  }
+
+  /* checkboxes and radios */
+  input[type="checkbox"] {
+    @apply cursor-pointer color__text color__border-divider-1 color__border-selected-1;
+    &:checked {
+      @apply !color__bg-text color__text;
+    }
+    &:hover {
+      @apply border__input--hover;
+    }
+    &:focus-visible {
+      @apply border__input--focus;
+    }
+  }
+  input[type="radio"] {
+    @apply rounded-full cursor-pointer color__text color__border-divider-1 color__border-selected-1;
+    &:checked {
+      @apply !color__bg-text color__text;
+    }
+    &:hover {
+      @apply border__input--hover;
+    }
+    &:focus-visible {
+      @apply border__input--focus;
+    }
+  }
+
+  [type='checkbox']:focus, [type='radio']:focus {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+    --tw-ring-inset: var(--tw-empty, /*!*/ /*!*/);
+    --tw-ring-offset-width: 2px;
+    --tw-ring-offset-color: var(--color__background-body);
+    --tw-ring-color: var(--color__border-selected-1);
+    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+
+  /* buttons */
+  button {
+    &:focus-visible {
+      @apply border--focus;
+    }
+  }
+
+  /* sliders */
+  input[type="range"]::-webkit-slider-thumb {
+    pointer-events: all;
+    width: 24px;
+    height: 24px;
+    -webkit-appearance: none;
+  }
+}
