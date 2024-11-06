@@ -39,4 +39,10 @@
   .window--max-cartclamp {
     @apply max-w-[calc(100vw-400px-2em)];
   }
+  .window--max-fullmenuclamp {
+    @apply max-w-[calc(100vw-300px)];
+  }
+  .window--max-fullcartclamp {
+    @apply max-w-[calc(100vw-400px)];
+  }
 }
