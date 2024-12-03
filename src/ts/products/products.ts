@@ -562,11 +562,15 @@ export const products = {
   galleryZoomIn() {
     this['gallery_zoom_'+this.gallery_index] = true;
     this.zoomed = true;
+    this.mouse_x = window.innerWidth / 2;
+    this.mouse_y = window.innerHeight / 2;
   },
 
   galleryZoomOut() {
     this['gallery_zoom_'+this.gallery_index] = false;
     this.zoomed = false;
+    this.mouse_x = 0;
+    this.mouse_y = 0;
   }
 
 };

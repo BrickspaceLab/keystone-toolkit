@@ -8,7 +8,8 @@ export default {
     shopify({
       sourceCodeDir:"src",
       entrypointsDir: 'src/entrypoints',
-      snippetFile: "assets.liquid"
+      snippetFile: "assets.liquid",
+      versionNumbers: true
     }),
   ],
   test: {

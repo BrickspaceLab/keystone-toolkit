@@ -132,10 +132,9 @@
     * {
       color: var(--color__text-light);
     }
-  }
-  .color__text::placeholder {
-    color: var(--color__text-light);
-    opacity: 0.75 !important;
+    *::placeholder, ::placeholder {
+      color: var(--color__text-light);
+    }
   }
 
   /* force text color, dark color that contrasts on light background */
@@ -144,10 +143,9 @@
     * {
       color: var(--color__text-light);
     }
-  }
-  .color__dark::placeholder {
-    color: var(--color__text-light) !important;
-    opacity: 0.75 !important;
+    *::placeholder, ::placeholder {
+      color: var(--color__text-light);
+    }
   }
 
   /* force text color, light color that contrasts on dark background */
@@ -156,16 +154,18 @@
     * {
       color: var(--color__text-dark);
     }
-  }
-  .color__light::placeholder {
-    color: var(--color__text-dark) !important;
-    opacity: 0.75 !important;
+    *::placeholder, ::placeholder {
+      color: var(--color__text-dark);
+    }
   }
 
   /* - link */
   .color__link {
     color: var(--color__text-link);
     * {
+      color: var(--color__text-link);
+    }
+    *::placeholder, ::placeholder {
       color: var(--color__text-link);
     }
   }
@@ -176,12 +176,18 @@
     * {
       color: var(--color__foreground-primary);
     }
+    *::placeholder, ::placeholder {
+      color: var(--color__foreground-primary);
+    }
   }
 
   /* - secondary */
   .color__secondary {
     color: var(--color__foreground-secondary);
     * {
+      color: var(--color__foreground-secondary);
+    }
+    *::placeholder, ::placeholder {
       color: var(--color__foreground-secondary);
     }
   }
@@ -192,6 +198,9 @@
     * {
       color: var(--color__foreground-tertiary);
     }
+    *::placeholder, ::placeholder {
+      color: var(--color__foreground-tertiary);
+    }
   }
 
   /* - neutral */
@@ -199,6 +208,9 @@
     color: var(--color__foregound-neutral);
     * {
       color: var(--color__foregound-neutral);
+    }
+    *::placeholder, ::placeholder {
+      color: var(--color__foreground-neutral);
     }
   }
 
@@ -208,6 +220,9 @@
     * {
       color: transparent;
     }
+    *::placeholder, ::placeholder {
+      color: transparent;
+    }
   }
 
   /* - inherit */
@@ -215,6 +230,17 @@
     color: inherit;
     * {
       color: inherit;
+    }
+    *::placeholder, ::placeholder {
+      color: inherit;
+    }
+  }
+
+  /* inputs */
+  .color__input {
+    color: var(--inputs__text);
+    * {
+      color: var(--inputs__text);
     }
   }
 

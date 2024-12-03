@@ -3,7 +3,6 @@
 /* ======= */
 
 @layer utilities {
-
   /* ======= */
   /* default borders */
   /* - default border width */
@@ -91,7 +90,9 @@
     @apply !no-underline;
     outline: 2px solid transparent;
     outline-offset: 2px;
-    box-shadow: var(--color__background-body) 0px 0px 0px 2px, var(--color__border-selected-1) 0px 0px 0px 4px;
+    box-shadow:
+      var(--color__background-body) 0px 0px 0px 2px,
+      var(--color__border-selected-1) 0px 0px 0px 4px;
   }
   .border--focus--inset {
     box-shadow: inset var(--color__border-selected-1) 0px 0px 0px 2px;
@@ -135,7 +136,6 @@
 
   /* shadow */
   .shadow--blur {
-    box-shadow: 0px 0px 100px 10px rgb(0 0 0 / 0.30);
+    box-shadow: 0px 0px 100px 10px rgb(0 0 0 / 0.3);
   }
-
 }

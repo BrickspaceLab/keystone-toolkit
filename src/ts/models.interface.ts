@@ -5,6 +5,7 @@ export interface AppInterface {
   hide_header: boolean;
   header_group_height: number;
   header_bar_height: number;
+  filter_group_height: number;
   is_scrolled: boolean;
   is_scrolled_up: boolean;
   prev_scroll_pos: number;

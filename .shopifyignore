@@ -4,3 +4,4 @@ tailwind.config.js
 postcss.config.js
 vite.config.ts
 README.md
+manifest.json

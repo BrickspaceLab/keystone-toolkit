@@ -9,6 +9,7 @@ export const globals = {
   hide_header: app.hide_header,                            // {boolean} To hide the header
   header_group_height: app.header_group_height,            // {number} Height of the header group
   header_bar_height: app.header_bar_height,                // {number} Height of the header bar
+  filter_group_height: app.filter_group_height,            // {number} Height of the filter group
 
   // Scroll
   is_scrolled: app.is_scrolled,                            // {boolean} To toggle check direction of scroll
