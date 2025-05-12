@@ -67,7 +67,7 @@ export const cart = {
       // Hide upsells
       this.cart.items.forEach((item) => {
         const upsellElements = document.querySelectorAll(
-          ".js-upsell-" + item.product_id
+          ".js-upsell-" + item.product_id,
         );
         upsellElements.forEach((element) => {
           element.style.display = "none";
@@ -143,7 +143,7 @@ export const cart = {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({ note: note }),
-        }
+        },
       );
 
       const data = await response.json();
@@ -167,7 +167,7 @@ export const cart = {
     key: number,
     quantity: number,
     openCart: boolean,
-    refresh: boolean
+    refresh: boolean,
   ) {
     // Play audio
     this.playAudioIfEnabled(this.click_audio);
@@ -191,7 +191,7 @@ export const cart = {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       // Parse response data
@@ -227,7 +227,7 @@ export const cart = {
     quantity: number,
     openCart: boolean,
     refresh: boolean,
-    target: HTMLInputElement
+    target: HTMLInputElement,
   ) {
     // Clear any existing timeout for the same target
     if (this.debounceTimeouts.has(target)) {
@@ -250,7 +250,7 @@ export const cart = {
     sellingPlanId: number,
     quantity: number,
     openCart: boolean,
-    enableAudio: boolean = true
+    enableAudio: boolean = true,
   ) {
     this.cart_loading = true;
     this.enable_body_scrolling = true;
@@ -317,7 +317,7 @@ export const cart = {
     quantity: number,
     openCart: boolean,
     enableAudio: boolean = true,
-    target: HTMLInputElement
+    target: HTMLInputElement,
   ) {
     // Clear any existing timeout for the same target
     if (this.debounceTimeouts.has(target)) {
@@ -331,7 +331,7 @@ export const cart = {
         sellingPlanId,
         quantity,
         openCart,
-        enableAudio
+        enableAudio,
       );
       this.debounceTimeouts.delete(target);
     }, 400);
@@ -360,7 +360,7 @@ export const cart = {
     oldQuantity: number,
     oldVariantId: number,
     newVariantId: number,
-    sellingPlanId: number
+    sellingPlanId: number,
   ) {
     this.cart_loading = true;
     this.enable_body_scrolling = true;
@@ -395,7 +395,7 @@ export const cart = {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (!oldResponse.ok) {
         throw new Error(`HTTP error! status: ${oldResponse.status}`);
@@ -410,7 +410,7 @@ export const cart = {
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
       if (!addResponse.ok) {
         throw new Error(`HTTP error! status: ${addResponse.status}`);
@@ -496,7 +496,7 @@ export const cart = {
     // Get data from Shopify
     try {
       const response = await fetch(
-        `${window.Shopify.routes.root}products/${product_handle}?section_id=quick-add`
+        `${window.Shopify.routes.root}products/${product_handle}?section_id=quick-add`,
       );
 
       // If response is not OK, throw an error
@@ -575,7 +575,6 @@ export const cart = {
     if (location.search.includes("cartshare")) {
       const query = location.search.substring(1);
       const queryArray = query.split("&");
-      console.log(queryArray);
 
       // Use map to transform the array
       const itemsArray = queryArray
@@ -593,11 +592,10 @@ export const cart = {
           return null;
         })
         .filter(Boolean);
-      console.log(itemsArray);
 
       // Filter out the object with cartshare property
       const filteredItemsArray = itemsArray.filter(
-        (obj) => !obj.hasOwnProperty("cartshare")
+        (obj) => !obj.hasOwnProperty("cartshare"),
       );
 
       // Create itemsObject from filteredItemsArray
@@ -605,7 +603,6 @@ export const cart = {
         variantId: Number(obj.id),
         quantity: Number(obj.q) || 1,
       }));
-      console.log(itemsObject);
 
       // Add items and open cart
       this.addCartItems(itemsObject);
@@ -615,7 +612,7 @@ export const cart = {
   // Generate url with query string based on cart contents
   generateUrl(): string {
     const params = this.cart.items.map(
-      (item) => `id=${item.variant_id},q=${item.quantity}`
+      (item) => `id=${item.variant_id},q=${item.quantity}`,
     );
 
     return `${window.location.origin}?cartshare=true&${params.join("&")}`;

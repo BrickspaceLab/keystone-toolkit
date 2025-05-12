@@ -3,7 +3,6 @@
 /* ======= */
 
 @layer base {
-
   /* body */
   html,
   body,
@@ -72,12 +71,12 @@
     @apply type__body text-[16px];
   }
   label {
-    @apply cursor-pointer type__body type--small;
+    @apply type__body type--small cursor-pointer;
   }
 
   /* links  */
   a {
-    @apply underline animation-300;
+    @apply animation-300 underline;
 
     &:hover {
       @apply underline md:opacity-75;
@@ -90,13 +89,15 @@
 
   /* spacing */
   .rte {
-    @apply space-y-4;
+    p:empty {
+      @apply pt-4;
+    }
   }
   ul {
-    @apply pl-4 list-disc;
+    @apply list-disc pl-4;
   }
   ol {
-    @apply pl-4 list-decimal;
+    @apply list-decimal pl-4;
   }
 
   /* font weight */

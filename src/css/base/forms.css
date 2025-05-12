@@ -21,7 +21,7 @@
   textarea {
     @apply min-h-[44px];
   }
-  
+
   /* basic inputs */
   input[type="text"],
   input[type="password"],
@@ -47,7 +47,7 @@
       @apply border__input--hover;
     }
     &:focus-visible {
-      @apply border__input--focus color__bg-body;
+      @apply border__input--focus color__bg-body color__text;
     }
     &:focus-visible::placeholder {
       @apply !color__text;
@@ -147,9 +147,24 @@
 
   /* sliders */
   input[type="range"]::-webkit-slider-thumb {
-    pointer-events: all;
-    width: 24px;
-    height: 24px;
-    -webkit-appearance: none;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    border: 3px solid var(--color__text-light);
+    background: var(--color__background-body);
+    pointer-events: auto;
+    appearance: none;
+    cursor: pointer;
+  }
+
+  input[type="range"]::-moz-range-thumb {
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    border: 3px solid var(--color__text-light);
+    background: var(--color__background-body);
+    pointer-events: auto;
+    -moz-appearance: none;
+    cursor: pointer;
   }
 }

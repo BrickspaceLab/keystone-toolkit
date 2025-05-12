@@ -79,7 +79,7 @@
       border-color: var(--color__background-shade-3);
     }
   }
-  
+
   /* - primary */
   .color__bg-primary {
     background-color: var(--color__background-primary);
@@ -132,7 +132,9 @@
     * {
       color: var(--color__text-light);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__text-light);
     }
   }
@@ -143,7 +145,9 @@
     * {
       color: var(--color__text-light);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__text-light);
     }
   }
@@ -154,7 +158,9 @@
     * {
       color: var(--color__text-dark);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__text-dark);
     }
   }
@@ -165,18 +171,22 @@
     * {
       color: var(--color__text-link);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__text-link);
     }
   }
-  
+
   /* - primary */
   .color__primary {
     color: var(--color__foreground-primary);
     * {
       color: var(--color__foreground-primary);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__foreground-primary);
     }
   }
@@ -187,7 +197,9 @@
     * {
       color: var(--color__foreground-secondary);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__foreground-secondary);
     }
   }
@@ -198,7 +210,9 @@
     * {
       color: var(--color__foreground-tertiary);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__foreground-tertiary);
     }
   }
@@ -209,7 +223,9 @@
     * {
       color: var(--color__foregound-neutral);
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: var(--color__foreground-neutral);
     }
   }
@@ -220,7 +236,9 @@
     * {
       color: transparent;
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: transparent;
     }
   }
@@ -231,7 +249,9 @@
     * {
       color: inherit;
     }
-    *::placeholder, ::placeholder {
+    *::placeholder,
+    ::placeholder {
+      @apply opacity-50;
       color: inherit;
     }
   }
@@ -314,7 +334,7 @@
   .color__border-dark {
     border-color: var(--color__text-light);
   }
-  
+
   /* - input */
   .color__border-input {
     border-color: var(--inputs__border);
@@ -349,7 +369,7 @@
       border-color: var(--color__shade-secondary);
     }
     * {
-      color: var(--color__foreground-secondary) !important;;
+      color: var(--color__foreground-secondary) !important;
     }
   }
 
@@ -363,7 +383,7 @@
       border-color: var(--color__shade-tertiary);
     }
     * {
-      color: var(--color__foreground-tertiary) !important;;
+      color: var(--color__foreground-tertiary) !important;
     }
   }
 
@@ -378,7 +398,7 @@
     }
     * {
       color: var(--color__foregound-neutral) !important;
-    } 
+    }
   }
 
   /* - plain */

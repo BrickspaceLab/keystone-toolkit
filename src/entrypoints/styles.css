@@ -49,16 +49,6 @@ html {
   @apply !hidden;
 }
 
-/* - fix for firefox range slider */
-input[type="range"]::-moz-range-thumb {
-  pointer-events: all;
-  cursor: pointer;
-  -moz-appearance: none;
-  width: 32px;
-  height: 24px;
-  /* @apply w-6 h-6 appearance-none pointer-events-auto; */
-}
-
 /* - strikethrough */
 .strikethrough {
   @apply line-through decoration-[#00000050] decoration-2;

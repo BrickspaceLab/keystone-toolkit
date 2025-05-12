@@ -4,7 +4,7 @@
 @layer components {
   /* standard button */
   .btn {
-    @apply relative type__nav border__button--radius !color__button-primary border__button animation-500 inline-flex w-auto cursor-pointer items-center justify-center overflow-hidden px-6 py-2 text-center animation-300 !no-underline h-[44px];
+    @apply type__nav border__button--radius !color__button-primary border__button animation-500 animation-300 relative inline-flex h-[44px] w-auto cursor-pointer items-center justify-center overflow-hidden px-6 py-2 text-center !no-underline;
     text-transform: var(--type__button-capiliziation) !important;
 
     * {
@@ -13,7 +13,7 @@
     }
 
     &__content {
-      @apply flex items-center type__nav;
+      @apply type__nav flex items-center;
     }
 
     /* states */
@@ -27,24 +27,24 @@
     }
     &--disabled,
     &:disabled {
-      @apply opacity-50 cursor-not-allowed;
+      @apply cursor-not-allowed opacity-50;
     }
 
     /* sizes */
     &--small {
-      @apply h-auto px-4 type--small max-h-[44px];
+      @apply type--small h-auto max-h-[44px] px-4;
     }
     &--small > * {
       @apply type--small;
     }
     &--smaller {
-      @apply h-auto px-4 py-1 type--smaller max-h-[44px];
+      @apply type--smaller h-auto max-h-[44px] px-4 py-1;
     }
     &--smaller > * {
       @apply type--smaller;
     }
     &--big {
-      @apply py-3 type--big px-9;
+      @apply type--big px-9 py-3;
     }
     &--big > * {
       @apply type--big;
@@ -66,7 +66,7 @@
     &--transparent {
       @apply !color__button-transparent;
     }
-    &--diff{
+    &--diff {
       background-color: #fff;
       border-color: #fff;
       color: #000;
@@ -77,37 +77,37 @@
 
     &--outline {
       @apply border--button-width;
-      background-color: transparent;
-      color: var(--color__text-light);
-      border-color: var(--color__text-light);
+      background-color: transparent !important;
+      color: var(--color__text-light) !important;
+      border-color: var(--color__text-light) !important;
       &:hover {
-        background-color: transparent;
-        border-color: var(--color__text-light);
+        background-color: transparent !important;
+        border-color: var(--color__text-light) !important;
         @apply border--focus--underline;
       }
       * {
-        color: var(--color__text-light);
+        color: var(--color__text-light) !important;
       }
     }
     &--outline-alt {
       @apply border--button-width;
-      background-color: transparent;
-      color: var(--color__text-dark);
-      border-color: var(--color__text-dark);
+      background-color: transparent !important;
+      color: var(--color__text-dark) !important;
+      border-color: var(--color__text-dark) !important;
       &:hover {
-        background-color: transparent;
-        border-color: var(--color__text-dark);
+        background-color: transparent !important;
+        border-color: var(--color__text-dark) !important;
         @apply border--focus--underline;
       }
       * {
-        color: var(--color__text-dark);
+        color: var(--color__text-dark) !important;
       }
     }
 
     &--minimal {
       background-color: transparent !important;
       color: var(--color__text-light) !important;
-      @apply min-w-0 min-h-0 p-0 normal-case border-none rounded-none type__body;
+      @apply type__body min-h-0 min-w-0 rounded-none border-none p-0 normal-case;
       &:hover {
         background-color: transparent !important;
         @apply border--focus--underline;
@@ -123,7 +123,7 @@
     &--minimal-alt {
       background-color: transparent !important;
       color: var(--color__text-dark) !important;
-      @apply min-w-0 min-h-0 p-0 normal-case border-none rounded-none type__body;
+      @apply type__body min-h-0 min-w-0 rounded-none border-none p-0 normal-case;
       &:hover {
         background-color: transparent !important;
         @apply border--focus--underline;
@@ -146,9 +146,9 @@
     }
     /* - make sure spinner is spinner */
     &__spinner {
-      @apply absolute flex items-center justify-center invisible w-11/12 transform left-2/4 top-2/4 -translate-y-2/4 -translate-x-2/4 bg-inherit;
+      @apply invisible absolute left-2/4 top-2/4 flex w-11/12 -translate-x-2/4 -translate-y-2/4 transform items-center justify-center bg-inherit;
       svg {
-        @apply m-0 m-auto animate-spinslow;
+        @apply animate-spinslow m-auto;
       }
     }
     /* - when loading class used, hide content and show spinner */

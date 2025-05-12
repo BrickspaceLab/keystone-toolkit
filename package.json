@@ -1,7 +1,7 @@
 {
   "name": "keystone",
   "type": "commonjs",
-  "version": "1.1.0",
+  "version": "1.3.0",
   "scripts": {
     "dev": "npm-run-all --parallel vite_dev shopify_dev",
     "pull": "shopify theme pull --nodelete --store brickspacetestingstore.myshopify.com",
