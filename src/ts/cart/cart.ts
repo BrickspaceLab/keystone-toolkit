@@ -1,7 +1,23 @@
 import { Product } from "../models.interface";
 
+// Interface for CartItem used in cart sharing
+interface CartItem {
+  variantId: number;
+  quantity: number;
+}
+
 export const cart = {
   debounceTimeouts: new Map<HTMLInputElement, NodeJS.Timeout>(),
+  
+  // Add memoization for cart summary and grouped items
+  _lastCartItemsHash: '',
+  _memoizedSummary: null as any,
+  _memoizedGroupedItems: null as any,
+
+  // Generate a simple hash of cart items for memoization
+  _generateCartHash(items: any[]): string {
+    return items.map(item => `${item.variant_id}:${item.quantity}:${item.final_line_price}`).join('|');
+  },
 
   // Update cart with fetched data
   async updateCart(openCart: boolean, openAlert: boolean = true) {
@@ -50,7 +66,7 @@ export const cart = {
           100 +
         "%";
 
-      // Sort cart
+      // Sort cart (with memoization)
       this.sortCartItems();
 
       // Reset cart loading
@@ -58,21 +74,8 @@ export const cart = {
         this.cart_loading = false;
       }, 200);
 
-      // Unhide upsells
-      const cartUpsells = document.querySelectorAll(".js-upsell");
-      cartUpsells.forEach(function (target) {
-        target.style.display = "flex";
-      });
-
-      // Hide upsells
-      this.cart.items.forEach((item) => {
-        const upsellElements = document.querySelectorAll(
-          ".js-upsell-" + item.product_id,
-        );
-        upsellElements.forEach((element) => {
-          element.style.display = "none";
-        });
-      });
+      // Optimize upsell handling - batch DOM operations
+      this.handleUpsells();
 
       // Set cart behavior based on screen width
       let cart_behavior;
@@ -130,6 +133,28 @@ export const cart = {
     }
   },
 
+  // Optimized upsell handling - batch DOM operations
+  handleUpsells() {
+    // Get all cart item product IDs in a Set for O(1) lookup
+    const cartProductIds = new Set(this.cart.items.map((item: any) => item.product_id));
+    
+    // Single DOM query for all upsells
+    const allUpsells = document.querySelectorAll(".js-upsell");
+    
+    // Show all upsells first (batch operation)
+    allUpsells.forEach((element) => {
+      (element as HTMLElement).style.display = "flex";
+    });
+
+    // Hide upsells for items in cart (batch operation)
+    cartProductIds.forEach(productId => {
+      const upsellElements = document.querySelectorAll(`.js-upsell-${productId}`) as NodeListOf<HTMLElement>;
+      upsellElements.forEach((element) => {
+        element.style.display = "none";
+      });
+    });
+  },
+
   // Update cart note
   async updateCartNote(note: string) {
     this.cart_loading = true;
@@ -154,7 +179,7 @@ export const cart = {
       } else {
         throw new Error(data.description);
       }
-    } catch (error) {
+    } catch (error: any) {
       this.error_message = error.message;
       this.error_alert = true;
     } finally {
@@ -231,10 +256,10 @@ export const cart = {
   ) {
     // Clear any existing timeout for the same target
     if (this.debounceTimeouts.has(target)) {
-      clearTimeout(this.debounceTimeouts.get(target));
+      clearTimeout(this.debounceTimeouts.get(target)!);
     }
 
-    // Set a new timeout to call changeCartItemQuantity after 500ms
+    // Set a new timeout to call changeCartItemQuantity after 400ms
     const timeout = setTimeout(() => {
       this.changeCartItemQuantity(key, quantity, openCart, refresh);
       this.debounceTimeouts.delete(target);
@@ -321,10 +346,10 @@ export const cart = {
   ) {
     // Clear any existing timeout for the same target
     if (this.debounceTimeouts.has(target)) {
-      clearTimeout(this.debounceTimeouts.get(target));
+      clearTimeout(this.debounceTimeouts.get(target)!);
     }
 
-    // Set a new timeout to call addCartItem after 500ms
+    // Set a new timeout to call addCartItem after 400ms 
     const timeout = setTimeout(() => {
       this.addCartItem(
         variantID,
@@ -444,16 +469,17 @@ export const cart = {
     let formData = new FormData(form);
 
     // Add properties to formData
-    let propertiesObj = Array.from(formData.entries())
+    let propertiesObj: Record<string, FormDataEntryValue> = Array.from(formData.entries())
       .filter(([key]) => key.includes("properties"))
       .reduce((obj, [key, value]) => {
         let name = key.replace("properties[", "").replace("]", "");
         obj[name] = value;
         return obj;
-      }, {});
+      }, {} as Record<string, FormDataEntryValue>);
+      
     if (Object.keys(propertiesObj).length > 0) {
       for (const [key, value] of Object.entries(propertiesObj)) {
-        formData.append(`properties[${key}]`, value);
+        formData.append(`properties[${key}]`, value as string);
       }
     }
 
@@ -522,38 +548,64 @@ export const cart = {
     }
   },
 
-  // Group cart items by product_id
+  // Optimized cart sorting with memoization
   sortCartItems() {
-    // Summarize cart items
-    this.cart.summary = this.cart.items.reduce((acc, item) => {
-      if (!acc[item.product_id]) {
-        acc[item.product_id] = {
+    const currentHash = this._generateCartHash(this.cart.items);
+    
+    // Return cached results if cart hasn't changed
+    if (currentHash === this._lastCartItemsHash && this._memoizedSummary && this._memoizedGroupedItems) {
+      this.cart.summary = this._memoizedSummary;
+      this.cart.groupedItems = this._memoizedGroupedItems;
+      return;
+    }
+
+    // Create summary and grouped items more efficiently
+    const summary: Record<string, any> = {};
+    const groupedItems: Record<string, any> = {};
+    const variantMap: Record<string, any> = {};
+
+    // Single pass through items to build summary, grouped items, and variant map
+    for (const item of this.cart.items) {
+      const productId = item.product_id;
+      const variantId = item.variant_id;
+      
+      // Build summary
+      if (!summary[productId]) {
+        summary[productId] = {
           product_title: item.product_title,
           quantity: 0,
           total_final_line_price: 0,
         };
       }
-      acc[item.product_id].quantity += item.quantity;
-      acc[item.product_id].total_final_line_price += item.final_line_price;
-      return acc;
-    }, {});
+      summary[productId].quantity += item.quantity;
+      summary[productId].total_final_line_price += item.final_line_price;
 
-    // Grouped cart items
-    this.cart.groupedItems = this.cart.items.reduce((acc, item) => {
-      if (!acc[item.product_id]) {
-        acc[item.product_id] = {
+      // Build grouped items
+      if (!groupedItems[productId]) {
+        groupedItems[productId] = {
           product_title: item.product_title,
           featured_image: item.featured_image,
           handle: item.handle,
-          product_has_only_default_variant:
-            item.product_has_only_default_variant,
+          product_has_only_default_variant: item.product_has_only_default_variant,
           url: item.url,
           items: [],
         };
       }
-      acc[item.product_id].items.push(item);
-      return acc;
-    }, {});
+      groupedItems[productId].items.push(item);
+
+      // Build variant map for O(1) lookups
+      variantMap[variantId] = item;
+    }
+
+    // Cache results
+    this._lastCartItemsHash = currentHash;
+    this._memoizedSummary = summary;
+    this._memoizedGroupedItems = groupedItems;
+    
+    // Set cart properties
+    this.cart.summary = summary;
+    this.cart.groupedItems = groupedItems;
+    this.cart.variantMap = variantMap;
   },
 
   // Display discount alert if  URL parameters contain '/discount'
@@ -591,7 +643,7 @@ export const cart = {
           }
           return null;
         })
-        .filter(Boolean);
+        .filter(Boolean) as Array<{ [key: string]: string }>;
 
       // Filter out the object with cartshare property
       const filteredItemsArray = itemsArray.filter(
@@ -612,9 +664,23 @@ export const cart = {
   // Generate url with query string based on cart contents
   generateUrl(): string {
     const params = this.cart.items.map(
-      (item) => `id=${item.variant_id},q=${item.quantity}`,
+      (item: any) => `id=${item.variant_id},q=${item.quantity}`,
     );
 
     return `${window.location.origin}?cartshare=true&${params.join("&")}`;
+  },
+
+  // Cleanup method to prevent memory leaks
+  cleanup() {
+    // Clear all pending timeouts
+    this.debounceTimeouts.forEach((timeout: NodeJS.Timeout) => {
+      clearTimeout(timeout);
+    });
+    this.debounceTimeouts.clear();
+    
+    // Clear memoization cache
+    this._lastCartItemsHash = '';
+    this._memoizedSummary = null;
+    this._memoizedGroupedItems = null;
   },
 };

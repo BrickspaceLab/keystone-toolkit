@@ -272,26 +272,34 @@ export const collections = {
     }
   },
 
-  // Price range slider
   handlePriceFilterChange(filterType: string) {
-    const minVal = document.querySelector(".min-val")! as HTMLInputElement;
-    const maxVal = document.querySelector(".max-val")! as HTMLInputElement;
+    const minSlider = document.querySelector(".min-val") as HTMLInputElement;
+    const maxSlider = document.querySelector(".max-val") as HTMLInputElement;
     const priceInputMin = document.querySelector(
       ".min-input",
-    )! as HTMLInputElement;
+    ) as HTMLInputElement;
     const priceInputMax = document.querySelector(
       ".max-input",
-    )! as HTMLInputElement;
-    const minGap = 1500;
+    ) as HTMLInputElement;
+    const minGap = 1; // Adjust this to control minimum spacing if needed
 
-    let gap = parseInt(maxVal.value) - parseInt(minVal.value);
-    if (gap <= minGap) {
-      minVal.value = (parseInt(maxVal.value) - minGap).toString();
-    }
+    let minValue = parseInt(minSlider.value);
+    let maxValue = parseInt(maxSlider.value);
+
     if (filterType === "min") {
-      priceInputMin.value = minVal.value;
+      if (minValue + minGap >= maxValue) {
+        minValue = maxValue - minGap;
+        minSlider.value = minValue.toString();
+      }
+      priceInputMin.value = minSlider.value;
+      this.filter_min_price = minValue;
     } else if (filterType === "max") {
-      priceInputMax.value = maxVal.value;
+      if (maxValue - minGap <= minValue) {
+        maxValue = minValue + minGap;
+        maxSlider.value = maxValue.toString();
+      }
+      priceInputMax.value = maxSlider.value;
+      this.filter_max_price = maxValue;
     } else {
       console.error('Invalid filter type. Expected "min" or "max".');
     }
