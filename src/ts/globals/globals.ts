@@ -50,6 +50,7 @@ export const globals = {
   error_message: app.error_message,                        // {string} Error message
 
   // Pagination
+  pagination_pages_loaded: app.pagination_pages_loaded,    // {number} To track number of pages loaded
   pagination_loading: app.pagination_loading,              // {boolean} To show loading state in pagination
   pagination_total_pages: app.pagination_total_pages,      // {number} Total number of pages for the current collection
   pagination_current_page: app.pagination_current_page,    // {number} Current page number in pagination

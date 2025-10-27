@@ -28,9 +28,8 @@ export const cart = {
     try {
       const response = await fetch(`${window.Shopify.routes.root}cart.js`, {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        credentials: "same-origin",
+        cache: "no-store",
       });
 
       if (!response.ok) {
@@ -39,14 +38,13 @@ export const cart = {
 
       const data = await response.json();
 
-      // Shopify properties
-      this.cart.items = data.items;
+      // Shopify properties - ensure complete replacement for reactivity
+      this.cart.items = [...data.items];
       this.cart.item_count = data.item_count;
       this.cart.total_price = data.total_price;
       this.cart.original_total_price = data.original_total_price;
       this.cart.total_discount = data.total_discount;
-      this.cart.cart_level_discount_applications =
-        data.cart_level_discount_applications;
+      this.cart.cart_level_discount_applications = data.cart_level_discount_applications;
 
       // Progress bar calculation
       let calcTotal;
@@ -76,6 +74,16 @@ export const cart = {
 
       // Optimize upsell handling - batch DOM operations
       this.handleUpsells();
+
+      // Ensure quantity inputs reflect authoritative cart quantities after DOM updates
+      // Small timeout allows Alpine to re-render before syncing inputs
+      setTimeout(() => {
+        try {
+          this.resetQuantityInputs();
+        } catch (e) {
+          // no-op
+        }
+      }, 10);
 
       // Set cart behavior based on screen width
       let cart_behavior;
@@ -237,7 +245,15 @@ export const cart = {
       else {
         this.error_message = data.description;
         this.error_alert = true;
-        this.cart_loading = false;
+
+        // When there's a stock limitation error, Shopify still updates the cart
+        // with the available quantity, so we need to refresh the cart data
+        this.updateCart(false, false);
+
+        // Force update of quantity input fields to reflect actual cart quantities
+        setTimeout(() => {
+          this.resetQuantityInputs();
+        }, 200);
       }
     } catch (error: any) {
       console.error("Error:", error);
@@ -326,7 +342,15 @@ export const cart = {
         else {
           this.error_message = data.description;
           this.error_alert = true;
-          this.cart_loading = false;
+
+          // Update cart to reflect the actual quantities that were added
+          // This ensures the UI shows the correct quantities after a stock limitation error
+          this.updateCart(false, false);
+
+          // Force update of quantity input fields to reflect actual cart quantities
+          setTimeout(() => {
+            this.resetQuantityInputs();
+          }, 200);
         }
       })
       .catch((error) => {
@@ -453,7 +477,15 @@ export const cart = {
       else {
         this.error_message = data.description;
         this.error_alert = true;
-        this.cart_loading = false;
+
+        // Update cart to reflect the actual quantities that were added
+        // This ensures the UI shows the correct quantities after a stock limitation error
+        this.updateCart(false, false);
+
+        // Force update of quantity input fields to reflect actual cart quantities
+        setTimeout(() => {
+          this.resetQuantityInputs();
+        }, 200);
       }
     } catch (error) {
       console.error("Error:", error);
@@ -508,7 +540,15 @@ export const cart = {
         else {
           this.error_message = data.description;
           this.error_alert = true;
-          this.cart_loading = false;
+
+          // Update cart to reflect the actual quantities that were added
+          // This ensures the UI shows the correct quantities after a stock limitation error
+          this.updateCart(false, false);
+
+          // Force update of quantity input fields to reflect actual cart quantities
+          setTimeout(() => {
+            this.resetQuantityInputs();
+          }, 200);
         }
       })
       .catch((error) => {
@@ -683,4 +723,32 @@ export const cart = {
     this._memoizedSummary = null;
     this._memoizedGroupedItems = null;
   },
+
+  // Reset quantity input fields to match actual cart quantities
+  // This is used when cart quantities are corrected due to stock limitations
+  resetQuantityInputs() {
+    // Find all quantity input fields and update them to match cart data
+    const quantityInputs = document.querySelectorAll('input[type="number"][x-model*="quantity"]');
+    quantityInputs.forEach((element: Element) => {
+      const input = element as HTMLInputElement;
+      // Get the cart item key from the input name or other attributes
+      const name = input.getAttribute('name') || input.getAttribute(':name') || '';
+      if (name.includes('cart-')) {
+        // Extract key from name like 'cart-12345:abcdef-quantity'
+        const keyMatch = name.match(/cart-([^-]+)-quantity/);
+        if (keyMatch) {
+          const key = keyMatch[1];
+          // Find the corresponding cart item
+          const cartItem = this.cart.items.find((item: any) => item.key.toString() === key);
+          if (cartItem && input.value !== cartItem.quantity.toString()) {
+            // Update the input value to match the actual cart quantity
+            input.value = cartItem.quantity.toString();
+            // Trigger input event to update Alpine.js binding
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+          }
+        }
+      }
+    });
+  },
+  
 };

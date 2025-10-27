@@ -51,7 +51,7 @@ html {
 
 /* - strikethrough */
 .strikethrough {
-  @apply line-through decoration-[#00000050] decoration-2;
+  @apply !line-through decoration-[#00000050] decoration-2;
 }
 
 /* - reset line-height */

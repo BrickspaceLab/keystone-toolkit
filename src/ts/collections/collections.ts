@@ -55,35 +55,19 @@ export const collections = {
   },
 
   // Check if next page is avaible and inject more products
-  async fetchAndRenderNextPage() {
+  async fetchAndRenderTableRows(product_handle: string, total_pages: number, current_page: number, section_id: string, inject_before: string) {
+    
     // Show loading
     this.pagination_loading = true;
 
-    // Get filter data
-    const filter = document.getElementById(
-      "js-desktopFilter",
-    ) as HTMLFormElement;
-
     // Get pagination count
-    const pageUrl = `&page=${this.pagination_current_page + 1}`;
-
-    // Get search parameter
-    const searchUrl = new URL(location.href).searchParams.get("q")
-      ? `&q=${new URL(location.href).searchParams.get("q")}`
-      : "";
+    const pageUrl = `&page=${current_page}`;
 
     // Build fetch url
-    let fetchUrl = `${window.location.pathname}?section_id=${this.pagination_section}${pageUrl}${searchUrl}`;
-
-    // If filter exists, add filter data to fetch url
-    if (filter) {
-      const filterData = new FormData(filter);
-      const filterUrl = this.buildUrlFilter(filterData);
-      fetchUrl += filterUrl;
-    }
+    let fetchUrl = `${window.Shopify.routes.root}products/${product_handle}?section_id=${section_id}${pageUrl}`;
 
     // Check if new page is available
-    if (this.pagination_current_page < this.pagination_total_pages) {
+    if (current_page <= total_pages) {
       // Get data from Shopify
       try {
         const response = await fetch(fetchUrl);
@@ -94,24 +78,27 @@ export const collections = {
         tempElement.innerHTML = data;
 
         // Find the results within the fetched data
-        const fetchedElement = tempElement.querySelector("#js-results");
+        const fetchedElement = tempElement.querySelector(".js-results");
 
         // If results are found, append its innerHTML to the existing element on the page
         if (fetchedElement) {
-          const resultsElement = document.getElementById("js-results");
-          if (resultsElement) {
-            resultsElement.insertAdjacentHTML(
+          const injectSpot = document.querySelector(inject_before);
+          if (injectSpot) {
+            injectSpot.insertAdjacentHTML(
               "beforeend",
               fetchedElement.innerHTML,
             );
           }
         }
 
-        // Update next page url
-        this.pagination_current_page += 1;
+        if (current_page >= total_pages) {
+          this.pagination_load_more_button = false;
+        }
 
         // Reset loading
         this.loadImages();
+
+        // Reset loading
         this.pagination_loading = false;
       } catch (error) {
         console.error("Error:", error);
@@ -123,6 +110,100 @@ export const collections = {
     else {
       this.pagination_loading = false;
     }
+  },
+  
+  // Check if next page is avaible and inject more products
+  async fetchAndRenderPage (direction: "next" | "previous") {
+  // Prevent browser from scrolling down
+  history.scrollRestoration = "manual";
+
+  // Show loading
+  this.pagination_loading = true;
+
+  // Update URL to show updated page number
+  if (direction === "next") {
+    let url = new URL(window.location.href);
+    url.searchParams.set("page", this.pagination_current_page + 1);
+    window.history.pushState({}, "", url.toString());
+  }
+
+  // Get filter data
+  const filter = document.getElementById("js-desktopFilter") as HTMLFormElement;
+
+  // Get pagination count
+  const pageUrl = `&page=${direction === "next" ? this.pagination_current_page + 1 : this.pagination_current_page - 1}`;
+
+  // Get search parameter
+  const searchUrl = new URL(location.href).searchParams.get("q") ? `&q=${new URL(location.href).searchParams.get("q")}` : '';
+
+  // Build fetch url
+  let fetchUrl = `${window.location.pathname}?section_id=${this.pagination_section}${pageUrl}${searchUrl}`;
+
+  // If filter exists, add filter data to fetch url
+  if (filter) {
+    const filterData = new FormData(filter);
+    const filterUrl = this.buildUrlFilter(filterData);
+    fetchUrl += filterUrl;
+  }
+  
+  // Check if new page is available
+  if (this.pagination_current_page < this.pagination_total_pages ||
+    direction === "previous") {
+
+    // Get data from Shopify
+    try {
+      const response = await fetch(fetchUrl);
+      const data = await response.text();
+
+      // Create a new HTML element and set its innerHTML to the fetched data
+      const tempElement = document.createElement("div");
+      tempElement.innerHTML = data;
+
+      // Find the results within the fetched data
+      const fetchedElement = tempElement.querySelector("#js-results");
+
+      // If results are found, append its innerHTML to the existing element on the page
+      if (fetchedElement) {
+        const resultsElement = document.getElementById("js-results");
+        if (resultsElement) {
+          if (direction === "next") {
+            resultsElement.insertAdjacentHTML(
+              "beforeend",
+              fetchedElement.innerHTML,
+            );
+          } else {
+            resultsElement.insertAdjacentHTML(
+              "afterbegin",
+              fetchedElement.innerHTML,
+            );
+          }
+        }
+      }
+
+      // Update next page url
+       // Update next page url
+       if (direction === "next") {
+        this.pagination_current_page += 1;
+        this.pagination_pages_loaded += 1;
+      } else {
+        this.pagination_current_page -= 1;
+      }
+      
+      // Reset loading
+      // this.loadImages();
+      this.pagination_loading = false;
+    } 
+
+    catch (error) {
+      console.error("Error:", error);
+      this.pagination_loading = false;
+    }
+  } 
+  
+  // If last page, stop loading
+  else {
+    this.pagination_loading = false;
+  }
   },
 
   // Load quick add with section render

@@ -30,6 +30,7 @@ export interface AppInterface {
   cart_drawer_style: string;
   error_alert: boolean;
   error_message: string;
+  pagination_pages_loaded: number;
   pagination_loading: boolean;
   pagination_total_pages: number;
   pagination_current_page: number;
